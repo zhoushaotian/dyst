@@ -1,11 +1,11 @@
 import {combineReducers } from 'redux';
 
-import list from './list';
-import post from './post';
+import modal from './modal';
+import study from './study';
 
 const appReducer = combineReducers({
-    list,
-    currentPost: post
+    modal,
+    study
 });
 
 export default appReducer;

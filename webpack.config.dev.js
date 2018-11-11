@@ -12,7 +12,7 @@ const del = require('del');
 del(path.resolve(__dirname, 'public/'));
 module.exports = {
     entry: {
-        app: [path.resolve(__dirname, 'build/src/app.jsx')]
+        app: ['./dev_client', path.resolve(__dirname, 'src/app.jsx')]
     },
     output: {
         path: path.resolve(__dirname, './public'),
@@ -29,7 +29,7 @@ module.exports = {
             {
                 test: /\.js|jsx$/,
                 loader: 'eslint-loader',
-                include: [path.join(__dirname, 'build/')],
+                include: [path.join(__dirname, 'src')],
                 enforce: 'pre',
                 options: {
                     formatter: require('eslint-friendly-formatter')
@@ -38,7 +38,7 @@ module.exports = {
             {
                 test: /\.jsx$/,
                 loader: 'babel-loader',
-                include: [path.join(__dirname, 'build/')],
+                include: [path.join(__dirname, 'src')],
                 options: {
                     presets: [
                         'react'
@@ -48,7 +48,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: [path.join(__dirname, 'build/')]
+                include: [path.join(__dirname, 'src')]
             },
             {
                 test: /\.less$/,
@@ -65,12 +65,17 @@ module.exports = {
                 }
             },
             {
+                test: /\.css$/,
+                loader: extractLESS.extract(['css-loader'])
+            },
+            {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                 loader: 'file-loader',
                 query: {
                     name: 'font/[name].[hash:7].[ext]'
                 }
-            }
+            },
+            
         ]
     },
     plugins: [

@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
 const webpack = require('webpack');
-const proxyMiddleware = require('http-proxy-middleware')
-const webpackConfig = require('./webpack.config.js');
+const proxyMiddleware = require('http-proxy-middleware');
+const webpackConfig = require('./webpack.config.dev.js');
 const proxyConfig = require('./proxy');
 
 const app = express();
@@ -33,6 +33,8 @@ Object.keys(proxyConfig).forEach(function (context) {
     }
     app.use(proxyMiddleware(options.filter || context, options));
 });
+// handle fallback for HTML5 history API
+app.use(require('connect-history-api-fallback')());
 app.use(devMiddleware);
 app.use(hotMiddleware);
 //设置静态目录
