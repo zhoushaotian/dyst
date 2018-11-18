@@ -1,6 +1,7 @@
 import fetchData from '../common/api';
 import {updateLayoutLoading} from './modal';
 
+
 export const UPDATE_STUDY_CATEGORY = 'UPDATE_STUDY_CATEGORY';
 export const CLEAN_STUDY_CATEGORY = 'CLEAN_STUDY_CATEGORY';
 export const UPDATE_STUDY_LIST = 'UPDATE_STUDY_LIST';
@@ -52,6 +53,28 @@ export function fetchStudyCategory(isFirst) {
         dispatch(updateLayoutLoading({
             loadingData: true
         }));
+        if(process.ENV === 'dev') {
+            return fetchData('devLogin')
+                .then(function() {
+                    fetchData('studyCategory')
+                        .then(function(res) {
+                            if(isFirst) {
+                                dispatch(fetchStudyList({
+                                    id: res.data.rows[0].id
+                                }));
+                            }
+                            dispatch(updateStudyCategory(res.data.rows));
+                            dispatch(updateLayoutLoading({
+                                loadingData: false
+                            }));
+                        }).catch(function(err) {
+                            dispatch(updateLayoutLoading({
+                                loadingData: false,
+                                pageWarn: err.message
+                            }));
+                        });
+                });
+        }
         fetchData('studyCategory')
             .then(function(res) {
                 if(isFirst) {
@@ -62,6 +85,11 @@ export function fetchStudyCategory(isFirst) {
                 dispatch(updateStudyCategory(res.data.rows));
                 dispatch(updateLayoutLoading({
                     loadingData: false
+                }));
+            }).catch(function(err) {
+                dispatch(updateLayoutLoading({
+                    loadingData: false,
+                    pageWarn: err.message
                 }));
             });
     };

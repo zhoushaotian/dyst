@@ -10,6 +10,8 @@ const extractLESS = new ExtractTextPlugin('css/app.[chunkhash:8].min.css');
 const del = require('del');
 
 del(path.resolve(__dirname, 'public/'));
+const ENV = "'dev'";
+
 module.exports = {
     entry: {
         app: ['./dev_client', path.resolve(__dirname, 'src/app.jsx')]
@@ -80,6 +82,9 @@ module.exports = {
     },
     plugins: [
         extractLESS,
+        new webpack.DefinePlugin({
+            'process.ENV': ENV
+        }),
         new webpack.HotModuleReplacementPlugin(),
         new FriendlyErrorsPlugin(),
         new HtmlWebpackPlugin({

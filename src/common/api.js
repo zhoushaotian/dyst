@@ -3,7 +3,8 @@ import axios from 'axios';
 const URLS = {
     'studyCategory': '/api/study/category/',
     'studyList': '/api/study/content/',
-    'studyDetail': '/api/study/detail/'
+    'studyDetail': '/api/study/detail/',
+    'devLogin': '/wx/login/'
 };
 
 const commonConfig = {

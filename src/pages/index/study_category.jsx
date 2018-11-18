@@ -2,18 +2,23 @@ import React from 'react';
 import {
     LoadMore,
     Panel,
-    // PanelHeader,
+    PanelHeader,
     // PanelBody,
-    MediaBoxTitle,
     MediaBox,
     MediaBoxInfo,
-    MediaBoxInfoMeta,
+    MediaBoxHeader,
+    // MediaBoxInfoMeta,
     MediaBoxDescription
 } from 'react-weui';
 import {connect} from 'react-redux';
 import propTypes from 'prop-types';
 
 import {fetchStudyCategory, fetchStudyList} from '../../actions/study';
+
+const imgStyle = {
+    height: '150px',
+    width: '100%'
+};
 
 function propsMap(state) {
     return {
@@ -41,29 +46,27 @@ class StudyCategory extends React.Component {
         }
         return (
             <div >
-                <Panel>
-                    {study.category.map((item, index) => {
-                        return (
-                            <div key={item.id} onClick={() => {this.handleNavClick(item.id, index);}}>
-                                
-                            </div>
-                        );
-                    })}
-                </Panel>
-                <div className="study-list-wp">
-                    <MediaBox type="text">
-                        <MediaBoxTitle>Media heading</MediaBoxTitle>
-                        <MediaBoxDescription>
-                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </MediaBoxDescription>
-                        <MediaBoxInfo>
-                            <MediaBoxInfoMeta>WeUI</MediaBoxInfoMeta>
-                            <MediaBoxInfoMeta>2016-8-8</MediaBoxInfoMeta>
-                            <MediaBoxInfoMeta extra>More</MediaBoxInfoMeta>
-                        </MediaBoxInfo>
-                    </MediaBox>
-                </div>
-                
+                {study.category.map((item, index) => {
+                    return (
+                        <Panel key={index}>
+                            <a className="study-list-wp" href={`/client/list/?id=${item.id}`} key={index}>
+                                <PanelHeader>
+                                    {item.name}
+                                </PanelHeader>
+                                <MediaBox type="text">
+                                    <MediaBoxHeader>
+                                    </MediaBoxHeader>
+                                    <MediaBoxDescription>
+                                        <img src={item.bimgUrl} alt="" style={imgStyle}/>
+                                    </MediaBoxDescription>
+                                    <MediaBoxInfo>
+                                        {item.desc}
+                                    </MediaBoxInfo>
+                                </MediaBox>
+                            </a>
+                        </Panel>
+                    );
+                })}
             </div>
             
         );

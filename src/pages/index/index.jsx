@@ -4,7 +4,7 @@ import {
     TabBarItem,
 } from 'react-weui';
 
-import StudyCategory from './study';
+import StudyCategory from './study_category';
 
 const TAB_BARS = [
     {
