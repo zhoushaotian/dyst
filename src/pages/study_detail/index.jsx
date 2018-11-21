@@ -1,16 +1,23 @@
 import React from 'react';
-import {
-    Page,
-    Article
-} from 'react-weui';
 import propTypes from 'prop-types';
 
-import LinkHeader from '../../components/link_header';
+import {
+    Page,
+    Article,
+    TabBar,
+    TabBarItem,
+} from 'react-weui';
+
+import moment from 'moment';
 import {connect} from 'react-redux';
 
 import {getQuery} from '../../common/tool';
 
-import {fetchStudyDetail, cleanStudyDetail} from '../../actions/study';
+import {fetchStudyDetail, cleanStudyDetail, recordStudyTime} from '../../actions/study';
+
+import {TAB_BARS} from '../index/index';
+
+const INTERVAL_RECORD_TIME = 30 * 1000;
 
 function propMap(state, ownProps) {
     return {
@@ -28,20 +35,32 @@ class StudyDetail extends React.Component {
         if(id) {
             dispatch(fetchStudyDetail({
                 id
+            }, () => {
+                // 定时调用记录学习时间
+                let curTime = new moment();
+                this.recordTimer =  setInterval(() => {
+                    dispatch(recordStudyTime({
+                        startTime: curTime.valueOf(),
+                        endTime: curTime.add(30, 's').valueOf(),
+                        cid: parseInt(id)
+                    }));
+                }, INTERVAL_RECORD_TIME);
             }));
         }
     }
     componentWillUnmount() {
         const {dispatch} = this.props;
         dispatch(cleanStudyDetail());
+        if(this.recordTimer) {
+            clearInterval(this.recordTimer);
+        }
     }
     render() {
         const {study} = this.props;
         const {detail} = study;
         return (
             <Page infiniteLoader={false}>
-                <LinkHeader/>
-                <div>
+                <div style={{backgroundColor: 'white', paddingBottom: '30px'}}>
                     <Article>
                         <h1>{detail.title}</h1>
                         <section dangerouslySetInnerHTML={{
@@ -51,6 +70,18 @@ class StudyDetail extends React.Component {
                         </section>
                     </Article>
                 </div>
+                <TabBar type="tabbar" style={{}}>
+                    {TAB_BARS.map(function(bar, index) {
+                        return (
+                            <TabBarItem 
+                                label={bar.name} 
+                                key={index} 
+                                icon={<img src={bar.icon}/>}
+                                onClick={() => {window.location = bar.href;}}
+                            />
+                        );
+                    })}
+                </TabBar>
             </Page>
         );
     }

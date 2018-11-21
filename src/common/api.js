@@ -4,6 +4,9 @@ const URLS = {
     'studyCategory': '/api/study/category/',
     'studyList': '/api/study/content/',
     'studyDetail': '/api/study/detail/',
+    'studyRecord': '/api/study/record/',
+    'idCardInfo': '/api/party/idcardinfo',
+    'cashMonth': '/api/party/yearpay/',
     'devLogin': '/wx/login/'
 };
 
@@ -22,11 +25,11 @@ function fetchData(action, data, method, opt) {
     let curReq = null;
     switch(curMethod) {
     case 'post':
-        curReq = axios.post(path, Object.assign(commonConfig, data, opt));
+        curReq = axios.post(path, Object.assign({}, commonConfig, data, opt));
         break;
     case 'get':
     default:
-        curReq = axios.get(path, Object.assign(commonConfig, {
+        curReq = axios.get(path, Object.assign({}, commonConfig, {
             params: data
         }, opt));
     }
@@ -34,7 +37,7 @@ function fetchData(action, data, method, opt) {
         if(res.data.code === 0) {
             return Promise.resolve(res.data);
         }else {
-            let err = new Error('系统错误');
+            let err = new Error(res.data.msg);
             return Promise.reject(err);
         }
     });

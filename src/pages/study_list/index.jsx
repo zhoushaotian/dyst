@@ -11,7 +11,7 @@ import {
 } from 'react-weui';
 import propTypes from 'prop-types';
 
-import LinkHeader from '../../components/link_header';
+
 import {connect} from 'react-redux';
 
 import {getQuery} from '../../common/tool';
@@ -86,7 +86,6 @@ class StudyList extends React.Component {
         const {list} = study;
         return (
             <Page>
-                <LinkHeader/>
                 <Panel style={{marginTop: '30px'}}>
                     {list.map(function(item, index) {
                         return (

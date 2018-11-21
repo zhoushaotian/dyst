@@ -111,7 +111,7 @@ export function fetchStudyList(query) {
     };
 }
 
-export function fetchStudyDetail(query) {
+export function fetchStudyDetail(query, cb) {
     return function(dispatch) {
         dispatch(updateLayoutLoading({
             loadingStudyDetail: true
@@ -119,9 +119,19 @@ export function fetchStudyDetail(query) {
         fetchData('studyDetail', query)
             .then(function(res) {
                 dispatch(updateStudyDetail(res.data));
+                if(typeof cb === 'function') cb();
                 dispatch(updateLayoutLoading({
                     loadingStudyDetail: false
                 }));
+            });
+    };
+}
+
+export function recordStudyTime(query) {
+    return function() {
+        fetchData('studyRecord', query, 'post')
+            .then(function() {
+                
             });
     };
 }
