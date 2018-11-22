@@ -17,6 +17,13 @@ function getHandleMessage(msg, type, time = 3000) {
     };
 }
 
+export function getDevDisplayValue() {
+    if(process.ENV === 'dev') {
+        return Math.random() * 1000;
+    }
+    return '';
+}
+
 export const message = {
     error: function(msg, time) {
         getHandleMessage(msg, 'warn', time)();

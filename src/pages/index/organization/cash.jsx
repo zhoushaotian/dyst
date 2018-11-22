@@ -19,6 +19,7 @@ import {
 } from 'react-weui';
 
 import {fetchIdCardInfo, fetchCashMonth} from '../../../actions/organization';
+import { message } from '../../../common/tool';
 
 
 function propMap(state) {
@@ -38,10 +39,12 @@ class Cash extends React.Component {
         this.handleFormItemChange = this.handleFormItemChange.bind(this);
         this.handleIdCardQuery = this.handleIdCardQuery.bind(this);
         this.handleYearChange = this.handleYearChange.bind(this);
+        this.handleSelectMonth = this.handleSelectMonth.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     render() {
         const {modal, organization} = this.props;
-        const {idcard, selectYear} = this.state;
+        const {idcard, selectYear, selectMonth} = this.state;
         const {cashMonth} = organization;
         let info = organization.idCardInfo ? organization.idCardInfo : {};
         return (
@@ -106,12 +109,12 @@ class Cash extends React.Component {
                 {cashMonth.length === 0 ? null : (
                     [
                         <CellsTitle key={1}>缴费月份</CellsTitle>,
-                        <Form checkbox key={2}>
+                        <Form checkbox key={2} onChange={this.handleSelectMonth}>
                             {cashMonth.map((item, index) => {
                                 return (
                                     <FormCell checkbox key={'month' + index}>
                                         <CellHeader>
-                                            <Checkbox name="month" value={item.month}/>
+                                            <Checkbox name="month" value={item.month} />
                                         </CellHeader>
                                         <CellBody>{item.month + '月'}</CellBody>
                                     </FormCell>
@@ -120,9 +123,22 @@ class Cash extends React.Component {
                         </Form>
                     ]
                 )}
+                <div style={{marginTop: '30px'}}>
+                </div>
+                {
+                    selectMonth.length !== 0 ?
+                        <Button onClick={this.handleSubmit}>确认缴费</Button>
+                        : null
+                }
+                <div style={{marginBottom: '30px'}}>
+                </div>
                 
             </div>
         );
+    }
+    handleSubmit() {
+        message.error('抱歉，暂未开通线上缴费');
+        console.log(this.state.selectMonth);
     }
     handleFormItemChange(field, value) {
         this.setState({
@@ -151,6 +167,20 @@ class Cash extends React.Component {
     handleYearChange(e) {
         this.setState({
             selectYear: e.target.value
+        });
+    }
+    handleSelectMonth(e) {
+        const {selectMonth} = this.state;
+        const curValue = e.target.value;
+        if(selectMonth.includes(curValue)) {
+            return this.setState({
+                selectMonth: selectMonth.filter(function(item) {
+                    return item !== curValue;
+                })
+            });
+        }
+        return this.setState({
+            selectMonth: selectMonth.concat([curValue])
         });
     }
 }

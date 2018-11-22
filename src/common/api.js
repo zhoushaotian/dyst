@@ -7,7 +7,10 @@ const URLS = {
     'studyRecord': '/api/study/record/',
     'idCardInfo': '/api/party/idcardinfo',
     'cashMonth': '/api/party/yearpay/',
-    'devLogin': '/wx/login/'
+    'userInfo': '/api/user/',
+    'devLogin': '/wx/login/',
+    'devUser': '/client/1'
+    
 };
 
 const commonConfig = {

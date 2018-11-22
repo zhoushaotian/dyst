@@ -1,4 +1,5 @@
 import React from 'react';
+import propTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
     Panel,
@@ -6,52 +7,63 @@ import {
     MediaBox,
     MediaBoxHeader,
     MediaBoxBody,
-    // MediaBoxTitle,
-    Cells,
-    CellBody,
-    CellFooter,
-    Cell
+    MediaBoxTitle,
+    MediaBoxDescription,
+    LoadMore
+    // Cells,
+    // CellBody,
+    // CellFooter,
+    // Cell
 
 } from 'react-weui';
 
+import {fetchUserInfo} from '../../actions/account';
+import {getDevDisplayValue} from '../../common/tool';
+
 function propMap(state) {
     return {
-        modal: state.modal
+        modal: state.modal,
+        account: state.account
     };
 }
 class Account extends React.Component {
+    componentDidMount() {
+        const {dispatch} = this.props;
+        dispatch(fetchUserInfo());
+    }
     render() {
+        const {account, modal} = this.props;
+        const {info} = account;
+        const isBind = info.haveBind === 1;
+        if(modal.loadingData) {
+            return <LoadMore loading/>;
+        }
         return (
             <div className="page">
                 <Panel>
                     <PanelBody>
                         <MediaBox type="appmsg" href="javascript:void(0);">
-                            <MediaBoxHeader></MediaBoxHeader>
+                            <MediaBoxHeader><img src={info.avator} alt=""/></MediaBoxHeader>
                             <MediaBoxBody>
-                                <div>
-                                    222
-                                </div>
+                                <MediaBoxTitle>{info.nickname}</MediaBoxTitle>
+                                <MediaBoxDescription>
+                                    {isBind && info.deptName ? info.deptName : getDevDisplayValue()}
+                                    <br/>
+                                    {isBind && info.idcard ? info.idcard : getDevDisplayValue()}
+                                </MediaBoxDescription>
                             </MediaBoxBody>
                         </MediaBox>
                     </PanelBody>
                 </Panel>
-                <Cells>
-                    <Cell href="javascript:;" access>
-                        <CellBody>
-                            Title
-                        </CellBody>
-                        <CellFooter/>
-                    </Cell>
-                    <Cell access>
-                        <CellBody>
-                            Title
-                        </CellBody>
-                        <CellFooter/>
-                    </Cell>
-                </Cells>
             </div>
         );
     }
 }
+
+Account.propTypes = {
+    account: propTypes.object,
+    modal: propTypes.object,
+    dispatch: propTypes.func
+};
 
 export default connect(propMap)(Account);

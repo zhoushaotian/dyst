@@ -12,7 +12,7 @@ import Cash from './cash';
 
 export const NAV_BARS = [
     {
-        name: '党员之家',
+        name: '党员组织信息',
         component: <div>家</div>
     },
     {
