@@ -70,18 +70,20 @@ class StudyDetail extends React.Component {
                         </section>
                     </Article>
                 </div>
-                <TabBar type="tabbar" style={{}}>
-                    {TAB_BARS.map(function(bar, index) {
-                        return (
-                            <TabBarItem 
-                                label={bar.name} 
-                                key={index} 
-                                icon={<img src={bar.icon}/>}
-                                onClick={() => {window.location = bar.href;}}
-                            />
-                        );
-                    })}
-                </TabBar>
+                <div style={{position: 'fixed', bottom: 0, right: 0, left: 0}}>
+                    <TabBar style={{}}>
+                        {TAB_BARS.map(function(bar, index) {
+                            return (
+                                <TabBarItem 
+                                    label={bar.name} 
+                                    key={index} 
+                                    icon={<img src={bar.icon}/>}
+                                    onClick={() => {window.location = bar.href;}}
+                                />
+                            );
+                        })}
+                    </TabBar>
+                </div>
             </Page>
         );
     }

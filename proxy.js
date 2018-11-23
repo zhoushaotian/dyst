@@ -4,18 +4,18 @@ const HOST_URI = 'http://3iepe2.natappfree.cc';
 
 module.exports = {
     '/api': {
-        target: HOST_URI,
+        target: REMOTE_URI,
         changeOrigin: true,
         pathRewrite: {
             '^/api': '/api'
         }
     },
     '/wx': {
-        target: HOST_URI,
+        target: REMOTE_URI,
         changeOrigin: true,
     },
     '/client/1': {
-        target: HOST_URI,
+        target: REMOTE_URI,
         changeOrigin: true,
     }
 };

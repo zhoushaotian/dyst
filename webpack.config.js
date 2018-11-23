@@ -14,9 +14,8 @@ module.exports = {
         path: path.resolve(__dirname, './dist'),
         filename: 'js/[name].[hash:8].js',
         chunkFilename: 'js/[name].[hash:8].js',
-        publicPath: '/'
+        publicPath: '/static/'
     },
-    devtool: 'source-map',
     resolve: {
         extensions: ['.js', '.jsx', '.json']
     },
