@@ -2,23 +2,36 @@ import React from 'react';
 import propTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
-    Panel,
-    PanelBody,
-    MediaBox,
-    MediaBoxHeader,
-    MediaBoxBody,
-    MediaBoxTitle,
-    MediaBoxDescription,
+//     // Panel,
+//     // PanelBody,
+//     // MediaBox,
+//     // MediaBoxHeader,
+//     // MediaBoxBody,
+//     // MediaBoxTitle,
+//     // MediaBoxDescription,
     LoadMore
-    // Cells,
-    // CellBody,
-    // CellFooter,
-    // Cell
+//     // Cells,
+//     // CellBody,
+//     // CellFooter,
+//     // Cell
 
 } from 'react-weui';
 
 import {fetchUserInfo} from '../../actions/account';
-import {getDevDisplayValue} from '../../common/tool';
+// import {getDevDisplayValue} from '../../common/tool';
+
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+// import CardMedia from '@material-ui/core/CardMedia';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
+import CardActionArea from '@material-ui/core/CardActionArea';
+
+
 
 function propMap(state) {
     return {
@@ -26,36 +39,63 @@ function propMap(state) {
         account: state.account
     };
 }
+
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+        margin: '5px',
+    },
+    paper: {
+        padding: theme.spacing.unit * 2,
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+    title: {
+        fontSize: '16px'
+    },
+    time: {
+        marginTop: '20px',
+        fongtSize: '12px'
+    }
+});
 class Account extends React.Component {
     componentDidMount() {
         const {dispatch} = this.props;
         dispatch(fetchUserInfo());
     }
     render() {
-        const {account, modal} = this.props;
+        const {account, modal, classes} = this.props;
         const {info} = account;
         const isBind = info.haveBind === 1;
         if(modal.loadingData) {
             return <LoadMore loading/>;
         }
         return (
-            <div className="page">
-                <Panel>
-                    <PanelBody>
-                        <MediaBox type="appmsg" href="javascript:void(0);">
-                            <MediaBoxHeader><img src={info.avator} alt=""/></MediaBoxHeader>
-                            <MediaBoxBody>
-                                <MediaBoxTitle>{info.nickname}</MediaBoxTitle>
-                                <MediaBoxDescription>
-                                    {isBind && info.deptName ? info.deptName : getDevDisplayValue()}
-                                    <br/>
-                                    {isBind && info.idcard ? info.idcard : getDevDisplayValue()}
-                                </MediaBoxDescription>
-                            </MediaBoxBody>
-                        </MediaBox>
-                    </PanelBody>
-                </Panel>
-            </div>
+            <Card
+                className={classes.root}
+            >
+                <CardActionArea>
+                    <CardHeader
+                        avatar={
+                            <Avatar aria-label="Recipe" className={classes.avatar} src={info.avator}/>
+                        }
+                        title={info.nickname}
+                        subheader={isBind ? '党员' : '未绑定党员'}
+                    />
+                    <CardContent>
+                        <Typography gutterBottom component="span" className={classes.time}>
+                            组织名称:{info.deptName}
+                        </Typography>
+                        <Typography gutterBottom component="span" className={classes.time}>
+                            身份证号:{info.idcard}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions>
+                    {isBind ? null : <Button variant="contained" size="small" color="secondary">绑定党员</Button>}
+                    {isBind ? <Button variant="contained" size="small" color="secondary">查看我的学习记录</Button> : null}
+                </CardActions>
+            </Card>
         );
     }
 }
@@ -63,7 +103,8 @@ class Account extends React.Component {
 Account.propTypes = {
     account: propTypes.object,
     modal: propTypes.object,
-    dispatch: propTypes.func
+    dispatch: propTypes.func,
+    classes: propTypes.object
 };
 
-export default connect(propMap)(Account);
+export default connect(propMap)(withStyles(styles)(Account));

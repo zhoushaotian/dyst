@@ -6,7 +6,16 @@ export const UPDATE_IDCARD_INFO = 'UPDATE_IDCARD_INFO';
 export const CLEAN_IDCARD_INFO = 'CLEAN_IDCARD_INFO';
 export const UPDATE_CASH_MONTH = 'UPDATE_CASH_MONTH';
 export const CLEAN_CASH_MONTH = 'CLEAN_CASH_MONTH';
+export const UPDATE_PARTY_ORG = 'UPDATE_PARTY_ORG';
+export const CLEAN_PARTY_ORG = 'CLEAN_PARTY_ORG';
 
+
+export function updatePartyOrg(data) {
+    return {
+        type: UPDATE_PARTY_ORG,
+        data
+    };
+}
 
 export function updateCashMonth(data) {
     return {
@@ -31,6 +40,26 @@ export function updateIdCardInfo(data) {
 export function cleanIdCardInfo() {
     return {
         type: CLEAN_IDCARD_INFO
+    };
+}
+
+export function fetchPartyOrg() {
+    return function(dispatch) {
+        dispatch(updateLayoutLoading({
+            loadingData: true
+        }));
+        fetchData('party')
+            .then(function(res) {
+                dispatch(updatePartyOrg(res.data));
+                dispatch(updateLayoutLoading({
+                    loadingData: false
+                }));
+            }).catch(function(err) {
+                dispatch(updateLayoutLoading({
+                    loadingData: false
+                }));
+                message.error(err.message);
+            });
     };
 }
 

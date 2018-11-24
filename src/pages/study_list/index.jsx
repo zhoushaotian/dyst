@@ -1,15 +1,22 @@
 import React from 'react';
-import {
-    Page,
-    Panel,
-    PanelBody,
-    MediaBox,
-    MediaBoxHeader,
-    MediaBoxBody,
-    MediaBoxTitle,
-    MediaBoxDescription,
-} from 'react-weui';
+// import {
+//     Page,
+//     Panel,
+//     PanelBody,
+//     MediaBox,
+//     MediaBoxHeader,
+//     MediaBoxBody,
+//     MediaBoxTitle,
+//     MediaBoxDescription,
+// } from 'react-weui';
 import propTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import CardMedia from '@material-ui/core/CardMedia';
 
 
 import {connect} from 'react-redux';
@@ -17,6 +24,7 @@ import {connect} from 'react-redux';
 import {getQuery} from '../../common/tool';
 
 import {fetchStudyList, cleanStudyList} from '../../actions/study';
+import Paper from '@material-ui/core/Paper';
 
 function propMap(state, ownProps) {
     return {
@@ -25,47 +33,28 @@ function propMap(state, ownProps) {
     };
 }
 
-function handleListItemType(item) {
-    const PAGE_URL = `/client/list/detail/?id=${item.cid}`;
-    switch(item.type) {
-    case 1:
-        return (
-            <MediaBox type="appmsg" href={PAGE_URL}>
-                <MediaBoxHeader><img src={item.imgUrl}/></MediaBoxHeader>
-                <MediaBoxBody>
-                    <MediaBoxTitle>{item.title}</MediaBoxTitle>
-                    <MediaBoxDescription>
-                        
-                    </MediaBoxDescription>
-                </MediaBoxBody>
-            </MediaBox>
-        );
-    case 2:
-        return (
-            <MediaBox type="appmsg" href={PAGE_URL}>
-                <MediaBoxBody>
-                    <MediaBoxTitle></MediaBoxTitle>
-                    <MediaBoxDescription>
-                        {item.title}
-                    </MediaBoxDescription>
-                </MediaBoxBody>
-            </MediaBox>
-        );
-    case 3:
-        return (
-            <MediaBox type="appmsg" href={PAGE_URL}>
-                <MediaBoxHeader></MediaBoxHeader>
-                <MediaBoxBody>
-                    <MediaBoxDescription>
-                        <img src={item.imgUrl}/>
-                    </MediaBoxDescription>
-                </MediaBoxBody>
-            </MediaBox>
-        );
-    default:
-        return null;
+
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+        padding: '5px',
+        paddingTop: '10px',
+        minHeight: '100%',
+        paddingBottom: '20px'
+    },
+    paper: {
+        padding: theme.spacing.unit * 2,
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+    title: {
+        fontSize: '16px'
+    },
+    time: {
+        marginTop: '20px',
+        fongtSize: '12px'
     }
-}
+});
 
 class StudyList extends React.Component {
     componentDidMount() {
@@ -82,20 +71,35 @@ class StudyList extends React.Component {
         dispatch(cleanStudyList());
     }
     render() {
-        const {study} = this.props;
+        const {study, classes} = this.props;
         const {list} = study;
         return (
-            <Page>
-                <Panel style={{marginTop: '30px'}}>
+            <Paper container className={classes.root} spacing={16}>
+                <Grid container spacing={24}>
                     {list.map(function(item, index) {
                         return (
-                            <PanelBody key={index}>
-                                {handleListItemType(item)}
-                            </PanelBody>
+                            <Grid item xs={12} key={index}>
+                                <a href={`/client/list/detail/?id=${item.cid}`}>
+                                    <Card>
+                                        {item.type !== 1 ? <CardMedia
+                                            component="img"
+                                            image={item.imgUrl}
+                                        /> : null}
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="p" className={classes.title}>
+                                                {item.title}
+                                            </Typography>
+                                            <Typography gutterBottom component="span" className={classes.time} color="textSecondary">
+                                                {item.time}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </a>
+                            </Grid>
                         );
                     })}
-                </Panel>
-            </Page>
+                </Grid>
+            </Paper>
         );
     }
 }
@@ -103,7 +107,8 @@ class StudyList extends React.Component {
 StudyList.propTypes = {
     routing: propTypes.object,
     dispatch: propTypes.func,
-    study: propTypes.object
+    study: propTypes.object,
+    classes: propTypes.object
 };
 
-export default connect(propMap)(StudyList);
+export default connect(propMap)(withStyles(styles)(StudyList));

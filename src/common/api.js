@@ -9,7 +9,8 @@ const URLS = {
     'cashMonth': '/api/party/yearpay/',
     'userInfo': '/api/user/',
     'devLogin': '/wx/login/',
-    'devUser': '/client/1'
+    'devUser': '/client/1',
+    'party': '/api/party/org/'
     
 };
 

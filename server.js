@@ -39,4 +39,4 @@ app.use(devMiddleware);
 app.use(hotMiddleware);
 //设置静态目录
 app.use('./dist', express.static(path.join(__dirname, '/dist')));
-app.listen('3000');
+app.listen('8080');

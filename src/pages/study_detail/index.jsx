@@ -59,14 +59,16 @@ class StudyDetail extends React.Component {
         const {study} = this.props;
         const {detail} = study;
         return (
-            <Page infiniteLoader={false}>
+            <Page infiniteLoader={false} className="article" title="Article" subTitle="文章">
                 <div style={{backgroundColor: 'white', paddingBottom: '30px'}}>
-                    <Article>
+                    <Article
+                    >
                         <h1>{detail.title}</h1>
-                        <section dangerouslySetInnerHTML={{
-                            __html: detail.content
-                        }}>
-                            
+                        <section>
+                            <h2 className="title">{detail.time}</h2>
+                            <div dangerouslySetInnerHTML={{
+                                __html: detail.content
+                            }}></div>                            
                         </section>
                     </Article>
                 </div>
