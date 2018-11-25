@@ -12,6 +12,11 @@ export function updateUserInfo(data) {
         data
     };
 }
+export function cleanUserInfo() {
+    return {
+        type: CLEAN_USER_INFO,
+    };
+}
 
 export function fetchUserInfo() {
     return function(dispatch) {

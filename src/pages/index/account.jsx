@@ -92,7 +92,7 @@ class Account extends React.Component {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    {isBind ? null : <Button variant="contained" size="small" color="secondary">绑定党员</Button>}
+                    {isBind ? null : <a href="/client/bind/"><Button variant="contained" size="small" color="secondary">绑定党员</Button></a>}
                     {isBind ? <Button variant="contained" size="small" color="secondary">查看我的学习记录</Button> : null}
                 </CardActions>
             </Card>

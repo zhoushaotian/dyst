@@ -1,9 +1,10 @@
-import {UPDATE_IDCARD_INFO, CLEAN_IDCARD_INFO, UPDATE_CASH_MONTH, CLEAN_CASH_MONTH, UPDATE_PARTY_ORG} from '../actions/organization';
+import {UPDATE_IDCARD_INFO, CLEAN_IDCARD_INFO, UPDATE_CASH_MONTH, CLEAN_CASH_MONTH, UPDATE_PARTY_ORG, UPDATE_METRIX} from '../actions/organization';
 
 const INIT_STATE = {
     idCardInfo: {},
     cashMonth: [],
-    partyOrg: []
+    partyOrg: [],
+    metrix: []
 };
 function cacLevel(data) {
     let tmpArr = [];
@@ -27,6 +28,10 @@ function cacLevel(data) {
 export default function(state = INIT_STATE, action) {
     
     switch(action.type) {
+    case UPDATE_METRIX:
+        return Object.assign({}, state, {
+            metrix: action.data
+        });
     case UPDATE_PARTY_ORG:
         // 计算级数
         action.data = cacLevel({children: action.data}).children;

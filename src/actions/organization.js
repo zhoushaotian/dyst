@@ -8,6 +8,15 @@ export const UPDATE_CASH_MONTH = 'UPDATE_CASH_MONTH';
 export const CLEAN_CASH_MONTH = 'CLEAN_CASH_MONTH';
 export const UPDATE_PARTY_ORG = 'UPDATE_PARTY_ORG';
 export const CLEAN_PARTY_ORG = 'CLEAN_PARTY_ORG';
+export const UPDATE_METRIX = 'UPDATE_METRIX';
+export const CLEAN_METRIX = 'CLEAN_METRIX';
+
+export function updateMetrix(data) {
+    return {
+        type: UPDATE_METRIX,
+        data
+    };
+}
 
 
 export function updatePartyOrg(data) {
@@ -43,6 +52,25 @@ export function cleanIdCardInfo() {
     };
 }
 
+export function fetchMetrix() {
+    return function(dispatch) {
+        dispatch(updateLayoutLoading({
+            loadingData: true
+        }));
+        fetchData('userMatrix')
+            .then(function(res) {
+                dispatch(updateMetrix(res.data));
+                dispatch(updateLayoutLoading({
+                    loadingData: false
+                }));
+            }).catch(function(err) {
+                dispatch(updateLayoutLoading({
+                    loadingData: false
+                }));
+                message.error(err.message);
+            });
+    };
+}
 export function fetchPartyOrg() {
     return function(dispatch) {
         dispatch(updateLayoutLoading({

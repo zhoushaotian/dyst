@@ -10,12 +10,17 @@ const URLS = {
     'userInfo': '/api/user/',
     'devLogin': '/wx/login/',
     'devUser': '/client/1',
-    'party': '/api/party/org/'
+    'party': '/api/party/org/',
+    'getBindCode': '/api/user/regcode/',
+    'bindParty': '/api/user/bind/',
+    'userMatrix': '/api/user/matrix/'
     
 };
 
 const commonConfig = {
-    
+    validateStatus: function (status) {
+        return status >= 200 && status <= 500; 
+    }
 };
 
 function fetchData(action, data, method, opt) {
@@ -29,7 +34,7 @@ function fetchData(action, data, method, opt) {
     let curReq = null;
     switch(curMethod) {
     case 'post':
-        curReq = axios.post(path, Object.assign({}, commonConfig, data, opt));
+        curReq = axios.post(path, data, Object.assign({}, commonConfig, opt));
         break;
     case 'get':
     default:
@@ -38,6 +43,7 @@ function fetchData(action, data, method, opt) {
         }, opt));
     }
     return curReq.then(function(res) {
+        console.log(res);
         if(res.data.code === 0) {
             return Promise.resolve(res.data);
         }else {

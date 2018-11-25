@@ -7,7 +7,7 @@ import {fetchPartyOrg} from '../../../actions/organization';
 import { withStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+// import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -30,14 +30,13 @@ function getEveryLevelCom(data, classes) {
             return (
                 <ExpansionPanel  key={item.id} defaultExpanded={false} >
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography className={classes.heading}>{item.name}</Typography>
+                        <Typography className={classes.heading} component={() => {
+                            return <span style={{textIndent: `${item.level * 10}px`}}>{item.name}</span>;
+                        }}></Typography>
                     </ExpansionPanelSummary>
-                    
-                    <ExpansionPanelDetails>
-                        <div>
-                            {getEveryLevelCom(item.children, classes)}
-                        </div>
-                    </ExpansionPanelDetails>
+                    <div>
+                        {getEveryLevelCom(item.children, classes)}
+                    </div>
                 </ExpansionPanel>
             );
         });
