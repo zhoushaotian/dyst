@@ -5,6 +5,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const extractLESS = new ExtractTextPlugin('app.[chunkhash:8].min.css');
+const del = require('del');
+
+del.sync(['dist/**']);
 
 module.exports = {
     entry: {
