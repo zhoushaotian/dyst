@@ -1,14 +1,7 @@
 import React from 'react';
-// import {
-//     Page,
-//     Panel,
-//     PanelBody,
-//     MediaBox,
-//     MediaBoxHeader,
-//     MediaBoxBody,
-//     MediaBoxTitle,
-//     MediaBoxDescription,
-// } from 'react-weui';
+import {
+    InfiniteLoader
+} from 'react-weui';
 import propTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -21,10 +14,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 
 import {connect} from 'react-redux';
 
-import {getQuery} from '../../common/tool';
+import {getQuery, loop} from '../../common/tool';
 
 import {fetchStudyList, cleanStudyList} from '../../actions/study';
-import Paper from '@material-ui/core/Paper';
 
 function propMap(state, ownProps) {
     return {
@@ -57,14 +49,13 @@ const styles = theme => ({
 });
 
 class StudyList extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.handleGetList = this.handleGetList.bind(this);
+    }
     componentDidMount() {
-        const {routing, dispatch} = this.props;
-        const id = getQuery(routing).id;
-        if(id) {
-            dispatch(fetchStudyList({
-                id
-            }));
-        }
+        this.handleGetList(loop, loop);
     }
     componentWillUnmount() {
         const {dispatch} = this.props;
@@ -74,33 +65,51 @@ class StudyList extends React.Component {
         const {study, classes} = this.props;
         const {list} = study;
         return (
-            <Paper container className={classes.root} spacing={16}>
-                <Grid container spacing={24}>
-                    {list.map(function(item, index) {
-                        return (
-                            <Grid item xs={12} key={index}>
-                                <a href={`/client/list/detail/?id=${item.cid}`}>
-                                    <Card>
-                                        {item.type !== 1 ? <CardMedia
-                                            component="img"
-                                            image={item.imgUrl}
-                                        /> : null}
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="p" className={classes.title}>
-                                                {item.title}
-                                            </Typography>
-                                            <Typography gutterBottom component="span" className={classes.time} color="textSecondary">
-                                                {item.time}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </a>
-                            </Grid>
-                        );
-                    })}
-                </Grid>
-            </Paper>
+            <InfiniteLoader
+                loaderDefaultIcon={<div style={{fontSize: '14px', textAlign: 'center'}}>没有更多数据了</div>}
+                triggerPercent={99}
+                onLoadMore={ (resolve, finish) => {
+                    this.handleGetList(resolve, finish);
+                }}
+            >
+                <div className={classes.root}>
+                    <Grid container spacing={24}>
+                        {list.map(function(item, index) {
+                            return (
+                                <Grid item xs={12} key={index}>
+                                    <a href={`/client/list/detail/?id=${item.cid}`}>
+                                        <Card>
+                                            {item.type !== 1 ? <CardMedia
+                                                component="img"
+                                                image={item.imgUrl}
+                                            /> : null}
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h5" component="p" className={classes.title}>
+                                                    {item.title}
+                                                </Typography>
+                                                <Typography gutterBottom component="span" className={classes.time} color="textSecondary">
+                                                    {item.time}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </a>
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                </div>
+            </InfiniteLoader>
         );
+    }
+    handleGetList(resolve, finish) {
+        const {study, dispatch, routing} = this.props;
+        const {categoryPage} = study;
+        const id = getQuery(routing).id;
+        dispatch(fetchStudyList({
+            offset: ++categoryPage.offset,
+            limit: 10,
+            categoryId: id
+        }, resolve, finish));
     }
 }
 

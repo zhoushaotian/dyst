@@ -12,7 +12,6 @@ function cacLevel(data) {
     tmpArr.push(data);
     while(tmpArr.length > 0) {
         let node = tmpArr.shift();
-        console.log(node);
         if(Array.isArray(node.children) && node.children.length !== 0) {
             node.children.map((item) => {
                 item.level = level;

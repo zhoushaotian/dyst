@@ -17,7 +17,7 @@ import {
 
 } from 'react-weui';
 
-import {fetchUserInfo} from '../../actions/account';
+import {fetchUserInfo } from '../../actions/account';
 // import {getDevDisplayValue} from '../../common/tool';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -30,6 +30,15 @@ import Avatar from '@material-ui/core/Avatar';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import CardActionArea from '@material-ui/core/CardActionArea';
+// import Collapse from '@material-ui/core/Collapse';
+// import List from '@material-ui/core/List';
+// import ListItem from '@material-ui/core/ListItem';
+// import ListItemText from '@material-ui/core/ListItemText';
+// import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+// import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+// import ExpandListItem from '../../components/expand_list_item.jsx';
 
 
 
@@ -59,6 +68,9 @@ const styles = theme => ({
     }
 });
 class Account extends React.Component {
+    constructor(props) {
+        super(props);
+    }
     componentDidMount() {
         const {dispatch} = this.props;
         dispatch(fetchUserInfo());
@@ -93,7 +105,7 @@ class Account extends React.Component {
                 </CardActionArea>
                 <CardActions>
                     {isBind ? null : <a href="/client/bind/"><Button variant="contained" size="small" color="secondary">绑定党员</Button></a>}
-                    {isBind ? <Button variant="contained" size="small" color="secondary">查看我的学习记录</Button> : null}
+                    {isBind ? <a href="/client/record/"><Button variant="contained" size="small" color="secondary">查看我的学习记录</Button></a> : null}
                 </CardActions>
             </Card>
         );

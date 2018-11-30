@@ -18,7 +18,7 @@ import Party from './party';
 
 export const NAV_BARS = [
     {
-        name: '党员组织信息',
+        name: '组织架构',
         component: <Party/>
     },
     {

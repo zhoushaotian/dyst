@@ -17,6 +17,7 @@ import {fetchStudyDetail, cleanStudyDetail, recordStudyTime} from '../../actions
 
 import {TAB_BARS} from '../index/index';
 
+
 const INTERVAL_RECORD_TIME = 30 * 1000;
 
 function propMap(state, ownProps) {
@@ -34,7 +35,7 @@ class StudyDetail extends React.Component {
         const id = getQuery(routing).id;
         if(id) {
             dispatch(fetchStudyDetail({
-                id
+                categoryId: id
             }, () => {
                 // 定时调用记录学习时间
                 let curTime = new moment();
@@ -60,18 +61,22 @@ class StudyDetail extends React.Component {
         const {detail} = study;
         return (
             <Page infiniteLoader={false} className="article" title="Article" subTitle="文章">
-                <div style={{backgroundColor: 'white', paddingBottom: '30px'}}>
+                <div style={{backgroundColor: 'white', paddingBottom: '50px'}}>
                     <Article
                     >
                         <h1>{detail.title}</h1>
-                        <section>
+                        <div>
                             <h2 className="title">{detail.time}</h2>
                             <div dangerouslySetInnerHTML={{
                                 __html: detail.content
-                            }}></div>                            
-                        </section>
+                            }}></div> 
+                            <img src="/img/txqjd.jpg" alt="" width="100%"/>
+                            <div style={{textAlign: 'center'}}>长按关注天星桥街道</div>
+                        </div>
                     </Article>
+                    
                 </div>
+                <br/>
                 <div style={{position: 'fixed', bottom: 0, right: 0, left: 0}}>
                     <TabBar style={{}}>
                         {TAB_BARS.map(function(bar, index) {

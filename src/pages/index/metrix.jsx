@@ -18,7 +18,6 @@ import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
     root: {
-        display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         overflow: 'hidden',

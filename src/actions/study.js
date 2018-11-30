@@ -48,7 +48,7 @@ export function cleanStudyCategory() {
     };
 }
 
-export function fetchStudyCategory(isFirst) {
+export function fetchStudyCategory(query, resolve, finish) {
     return function(dispatch) {
         dispatch(updateLayoutLoading({
             loadingData: true
@@ -56,17 +56,20 @@ export function fetchStudyCategory(isFirst) {
         if(process.ENV === 'dev') {
             return fetchData('devLogin')
                 .then(function() {
-                    fetchData('studyCategory')
+                    fetchData('studyCategory', query)
                         .then(function(res) {
-                            if(isFirst) {
-                                dispatch(fetchStudyList({
-                                    id: res.data.rows[0].id
-                                }));
+                            if(res.data.rows.length === 0) {
+                                return finish();
                             }
-                            dispatch(updateStudyCategory(res.data.rows));
+                            dispatch(updateStudyCategory({
+                                content: res.data.rows,
+                                limit: query.limit,
+                                offset: query.offset
+                            }));
                             dispatch(updateLayoutLoading({
                                 loadingData: false
                             }));
+                            resolve();
                         }).catch(function(err) {
                             dispatch(updateLayoutLoading({
                                 loadingData: false,
@@ -75,17 +78,20 @@ export function fetchStudyCategory(isFirst) {
                         });
                 });
         }
-        fetchData('studyCategory')
+        fetchData('studyCategory', query)
             .then(function(res) {
-                if(isFirst) {
-                    dispatch(fetchStudyList({
-                        id: res.data.rows[0].id
-                    }));
+                if(res.data.rows === 0) {
+                    return finish();
                 }
-                dispatch(updateStudyCategory(res.data.rows));
+                dispatch(updateStudyCategory({
+                    content: res.data.rows,
+                    limit: query.limit,
+                    offset: query.offset
+                }));
                 dispatch(updateLayoutLoading({
                     loadingData: false
                 }));
+                resolve();
             }).catch(function(err) {
                 dispatch(updateLayoutLoading({
                     loadingData: false,
@@ -95,17 +101,25 @@ export function fetchStudyCategory(isFirst) {
     };
 }
 
-export function fetchStudyList(query) {
+export function fetchStudyList(query, resolve, finish) {
     return function(dispatch) {
         dispatch(updateLayoutLoading({
             loadingStudyList: true
         }));
         fetchData('studyList', query)
             .then(function(res) {
-                dispatch(updateStudyList(res.data.rows));
+                if(res.data.rows.length === 0) {
+                    return finish();
+                }
+                dispatch(updateStudyList({
+                    content: res.data.rows,
+                    limit: query.limit,
+                    offset: query.offset
+                }));
                 dispatch(updateLayoutLoading({
                     loadingStudyList: false
                 }));
+                resolve();
             });
         
     };

@@ -36,3 +36,7 @@ export const message = {
 export function getQuery(routing) {
     return routing.location ? routing.location.query : {};
 }
+
+export function loop() {
+    
+}

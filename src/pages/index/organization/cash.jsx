@@ -149,7 +149,6 @@ class Cash extends React.Component {
     handleSubmit() {
         message.error('抱歉，暂未开通线上缴费');
         console.log(this.state.selectMonth);
-        
         window.WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {
                 'appId': 'wx2421b1c4370ec43b',     //公众号名称，由商户传入     

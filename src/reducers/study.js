@@ -10,7 +10,15 @@ import {
 const INIT_STATE = {
     category: [],
     list: [],
-    detail: {}
+    detail: {},
+    categoryPage: {
+        limit: 10,
+        offset: 0
+    },
+    listPage: {
+        limit: 10,
+        offset: 0
+    }
 };
 
 
@@ -26,7 +34,11 @@ export default function(state = INIT_STATE, action) {
         });
     case UPDATE_STUDY_CATEGORY:
         return Object.assign({}, state, {
-            category: action.data
+            category: state.category.concat(action.data.content),
+            categoryPage: {
+                limit: action.data.limit,
+                offset: action.data.offset
+            }
         });
     case CLEAN_STUDY_CATEGORY:
         return Object.assign({}, state, {
@@ -34,7 +46,11 @@ export default function(state = INIT_STATE, action) {
         });
     case UPDATE_STUDY_LIST:
         return Object.assign({}, state, {
-            list: action.data
+            list: action.data.content,
+            listPage: {
+                limit: action.data.limit,
+                offset: action.data.offset
+            }
         });
     case CLEAN_STUDY_LIST:
         return Object.assign({}, state, {

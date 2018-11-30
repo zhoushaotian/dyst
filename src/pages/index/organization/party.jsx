@@ -11,6 +11,8 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import {LoadMore} from 'react-weui';
+
 
 const styles = theme => ({
     root: {
@@ -26,7 +28,6 @@ const styles = theme => ({
 function getEveryLevelCom(data, classes) {
     if(Array.isArray(data) && data.length !== 0) {
         return data.map(function(item) {
-            console.log(item.level);
             return (
                 <ExpansionPanel  key={item.id} defaultExpanded={false} >
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -58,41 +59,13 @@ class Party extends React.Component {
         dispatch(fetchPartyOrg());
     }
     render() {
-        const {classes, organization} = this.props;
+        const {classes, organization, modal} = this.props;
         const {partyOrg} = organization;
+        if(modal.loadingData) {
+            <LoadMore loading/>;
+        }
         return (
             <div className={classes.root}>
-                {/* {partyOrg.map(function(firstItem, index) {
-                    return (
-                        <ExpansionPanel key={'first' + index}>
-                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography className={classes.heading}>{firstItem.name}</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                {Array.isArray(firstItem.children) ? firstItem.children.map(function(secItem, index) {
-                                    return (
-                                        <ExpansionPanel key={'secend' + index}>
-                                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                                <Typography className={classes.heading}>{secItem.name}</Typography>
-                                            </ExpansionPanelSummary>
-                                            <ExpansionPanelDetails>
-                                                {Array.isArray(firstItem.children) ? firstItem.children.map(function(thirdItem, index) {
-                                                    return (
-                                                        <ExpansionPanel key={'third' + index}>
-                                                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                                                <Typography className={classes.heading}>{thirdItem.name}</Typography>
-                                                            </ExpansionPanelSummary>
-                                                        </ExpansionPanel>
-                                                    );
-                                                }) : null}
-                                            </ExpansionPanelDetails>
-                                        </ExpansionPanel>
-                                    );
-                                }) : null}
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                    );
-                })} */}
                 {getEveryLevelCom(partyOrg, classes)}
             </div>
         );
@@ -102,7 +75,8 @@ class Party extends React.Component {
 Party.propTypes = {
     dispatch: propTypes.func,
     classes: propTypes.object,
-    organization: propTypes.object
+    organization: propTypes.object,
+    modal: propTypes.object
 };
 
 export default connect(propMap)(withStyles(styles)(Party));

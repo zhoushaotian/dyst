@@ -99,7 +99,6 @@ class Bind extends React.Component {
             phone,
             code
         }, 'post').then(function(res) {
-            console.log(res);
             message.success(res.msg + '即将跳转首页');
             setTimeout(() => {
                 window.location = '/client/';

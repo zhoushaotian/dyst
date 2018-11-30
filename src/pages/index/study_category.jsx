@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    LoadMore,
     Panel,
     PanelHeader,
     // PanelBody,
@@ -8,12 +7,14 @@ import {
     MediaBoxInfo,
     MediaBoxHeader,
     // MediaBoxInfoMeta,
-    MediaBoxDescription
+    MediaBoxDescription,
+    InfiniteLoader
 } from 'react-weui';
 import {connect} from 'react-redux';
 import propTypes from 'prop-types';
 
-import {fetchStudyCategory, fetchStudyList} from '../../actions/study';
+import {fetchStudyCategory} from '../../actions/study';
+import {loop} from '../../common/tool';
 
 const imgStyle = {
     height: '150px',
@@ -27,29 +28,34 @@ function propsMap(state) {
     };
 }
 
+
 class StudyCategory extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             activeNav: 0
         };
-        this.handleNavClick = this.handleNavClick.bind(this);
+
+        this.handleGetList = this.handleGetList.bind(this);
     }
     componentDidMount() {
-        const {dispatch} = this.props;
-        dispatch(fetchStudyCategory(true));
+        this.handleGetList(loop, loop);
     }
     render() {
-        const {study, modal} = this.props;
-        if(modal.loadingData) {
-            return <LoadMore loading/>;
-        }
+        const {study} = this.props;
         return (
-            <div >
+            <InfiniteLoader
+                loaderDefaultIcon={<div style={{fontSize: '14px', textAlign: 'center'}}>没有更多数据了</div>}
+                height={'90vh'}
+                triggerPercent={99}
+                onLoadMore={ (resolve, finish) => {
+                    this.handleGetList(resolve, finish);
+                }}
+            >
                 {study.category.map((item, index) => {
                     return (
                         <Panel key={index}>
-                            <a className="study-list-wp" href={`/client/list/?id=${item.id}`} key={index}>
+                            <a className="study-list-wp" href={`/client/list/?id=${item.id}`}>
                                 <PanelHeader>
                                     {item.name}
                                 </PanelHeader>
@@ -67,19 +73,17 @@ class StudyCategory extends React.Component {
                         </Panel>
                     );
                 })}
-            </div>
+            </InfiniteLoader>
             
         );
     }
-    handleNavClick(id, index) {
-        const {dispatch} = this.props;
-        this.setState({
-            activeNav: index
-        }, () => {
-            dispatch(fetchStudyList({
-                id
-            }));
-        });
+    handleGetList(resolve, finish) {
+        const {study, dispatch} = this.props;
+        const {categoryPage} = study;
+        dispatch(fetchStudyCategory({
+            offset: ++categoryPage.offset,
+            limit: 10
+        }, resolve, finish));
     }
 }
 

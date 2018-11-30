@@ -13,7 +13,9 @@ const URLS = {
     'party': '/api/party/org/',
     'getBindCode': '/api/user/regcode/',
     'bindParty': '/api/user/bind/',
-    'userMatrix': '/api/user/matrix/'
+    'userMatrix': '/api/user/matrix/',
+    'getCategoryRecord': '/api/study/category/',
+    'getStudyRecord': '/api/study/categorystudy/'
     
 };
 
@@ -43,7 +45,6 @@ function fetchData(action, data, method, opt) {
         }, opt));
     }
     return curReq.then(function(res) {
-        console.log(res);
         if(res.data.code === 0) {
             return Promise.resolve(res.data);
         }else {
