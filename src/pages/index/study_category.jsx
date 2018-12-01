@@ -57,7 +57,7 @@ class StudyCategory extends React.Component {
                         <Panel key={index}>
                             <a className="study-list-wp" href={`/client/list/?id=${item.id}`}>
                                 <PanelHeader>
-                                    {item.name}
+                                    <span style={{color: 'black', fontSize: '18px'}}>{item.name}</span>
                                 </PanelHeader>
                                 <MediaBox type="text">
                                     <MediaBoxHeader>

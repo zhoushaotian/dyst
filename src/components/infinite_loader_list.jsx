@@ -2,9 +2,43 @@ import React from 'react';
 import propTypes from 'prop-types';
 
 
-import {InfiniteLoader, Page, Cells, Cell, CellBody, CellFooter} from 'react-weui';
+import {InfiniteLoader} from 'react-weui';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
+import FaceIcon from '@material-ui/icons/Face';
 
+import { withStyles } from '@material-ui/core/styles';
 
+const styles = {
+    card: {
+        width: '100%',
+        marginBottom: '10px'
+    },
+    bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+    },
+    title: {
+        fontSize: 20,
+    },
+    time: {
+        fontSize: 12
+    },
+    pos: {
+        marginBottom: 12,
+    },
+    button: {
+        fontSize: 14
+    },
+    wp: {
+        padding: '5px'
+    }
+};
 class CategoryRecord extends React.Component {
     constructor(props) {
         super(props);
@@ -18,6 +52,7 @@ class CategoryRecord extends React.Component {
         this.handleGetList();
     }
     render() {
+        const {classes} = this.props;
         const {data} = this.state;
         return (
             <InfiniteLoader
@@ -26,28 +61,32 @@ class CategoryRecord extends React.Component {
                     this.handleGetList(resolve, finish);
                 }}
             >
-                <Page className="infinite"
-                    loaderDefaultIcon={<div style={{fontSize: '14px', textAlign: 'center'}}>没有更多数据了</div>}
-                    triggerPercent={99}
-                    onLoadMore={ (resolve, finish) => {
-                        this.handleGetList(resolve, finish);
-                    }}
-                >
-                    <Cells>
-                        {
-                            data.map( (item, i) => {
-                                return (
-                                    <Cell href={item.href} key={i} access>
-                                        <CellBody>
-                                            {item.name}
-                                        </CellBody>
-                                        <CellFooter/>
-                                    </Cell>
-                                );
-                            })
-                        }
-                    </Cells>
-                </Page>
+                <div className={classes.wp}>
+                    {data.map(function(item, index) {
+                        return (
+                            <Card className={classes.card} key={index}>
+                                <CardContent>
+                                    <Typography variant="h5" component="h2" className={classes.title}>
+                                        {item.title}
+                                    </Typography>
+                                    <Chip
+                                        icon={<FaceIcon />}
+                                        label={item.studyTime}
+                                        color="primary"
+                                        variant="outlined"
+                                    />
+                                </CardContent>
+                                {
+                                    item.href ?
+                                        (
+                                            <CardActions>
+                                                <a href={item.href}><Button size="small" variant="contained" color="secondary" className={classes.button}>查看详情</Button></a>
+                                            </CardActions>
+                                        ) : null}
+                            </Card>
+                        );
+                    })}
+                </div>
             </InfiniteLoader>
         );
     }
@@ -59,6 +98,12 @@ class CategoryRecord extends React.Component {
             offset,
             ...query
         }).then((res) => {
+            // 处理数据
+            res.data.rows = res.data.rows.map(function(item) {
+                return Object.assign({}, item, {
+                    href: item.categoryId ? `/client/record/?id=${item.categoryId}` : ''
+                });
+            });
             if(res.data.rows.length !== 0) {
                 return this.setState({
                     offset: ++offset,
@@ -75,7 +120,8 @@ class CategoryRecord extends React.Component {
 
 CategoryRecord.propTypes = {
     fetchPromise: propTypes.func,
-    query: propTypes.object
+    query: propTypes.object,
+    classes: propTypes.object
 };
 
-export default CategoryRecord;
+export default withStyles(styles)(CategoryRecord);
