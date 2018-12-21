@@ -1,5 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import {connect} from 'react-redux';
 
 // import {
 //     Tab,
@@ -31,6 +32,12 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper
     }
 });
+
+function propMap(state) {
+    return {
+        routing: state.routing
+    };
+}
 class Organization extends React.Component {
     constructor(props) {
         super(props);
@@ -39,6 +46,16 @@ class Organization extends React.Component {
         };
         this.handleNavClick = this.handleNavClick.bind(this);
         
+    }
+    componentDidMount() {
+        const {routing} = this.props;
+        const {locationBeforeTransitions} = routing;
+        const nav = parseInt(locationBeforeTransitions ? locationBeforeTransitions.query.nav : '');
+        if(nav) {
+            this.setState({
+                nav: nav - 1
+            });
+        }
     }
     render() {
         const {classes} = this.props;
@@ -56,7 +73,7 @@ class Organization extends React.Component {
                         })}
                     </Tabs>
                 </AppBar>
-                {NAV_BARS[nav].component}
+                {NAV_BARS[nav] ? NAV_BARS[nav].component : NAV_BARS[0].component}
             </div>
             // <Tab>
             //     <NavBar>
@@ -80,7 +97,8 @@ class Organization extends React.Component {
 }
 
 Organization.propTypes = {
-    classes: propTypes.object
+    classes: propTypes.object,
+    routing: propTypes.object
 };
 
-export default withStyles(styles)(Organization);
+export default withStyles(styles)(connect(propMap)(Organization));
