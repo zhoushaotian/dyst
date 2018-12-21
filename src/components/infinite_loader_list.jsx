@@ -12,6 +12,7 @@ import Chip from '@material-ui/core/Chip';
 import FaceIcon from '@material-ui/icons/Face';
 
 import { withStyles } from '@material-ui/core/styles';
+import { message } from '../common/tool';
 
 const styles = {
     card: {
@@ -56,6 +57,7 @@ class CategoryRecord extends React.Component {
         const {data} = this.state;
         return (
             <InfiniteLoader
+                loaderDefaultIcon={<div className="no-more">没有更多数据了</div>}
                 triggerPercent={99}
                 onLoadMore={ (resolve, finish) => {
                     this.handleGetList(resolve, finish);
@@ -114,6 +116,8 @@ class CategoryRecord extends React.Component {
             }
             if(typeof resolve === 'function') finish();
             
+        }).catch((err) => {
+            message.error(err.message);
         });
     }
 }

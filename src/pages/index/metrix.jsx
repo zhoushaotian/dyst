@@ -62,7 +62,7 @@ class Metrix extends React.Component {
             return <LoadMore loading/>;
         }
         return (
-            <Paper style={{margin: '10px'}}>
+            <Paper style={{margin: '10px', minHeight: '95vh'}}>
                 <GridList cellHeight={180} className={classes.gridList} spacing="8">
                     {metrix. map(function(item, index) {
                         return (

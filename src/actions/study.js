@@ -1,5 +1,6 @@
 import fetchData from '../common/api';
 import {updateLayoutLoading} from './modal';
+import {message} from '../common/tool';
 
 
 export const UPDATE_STUDY_CATEGORY = 'UPDATE_STUDY_CATEGORY';
@@ -128,15 +129,17 @@ export function fetchStudyList(query, resolve, finish) {
 export function fetchStudyDetail(query, cb) {
     return function(dispatch) {
         dispatch(updateLayoutLoading({
-            loadingStudyDetail: true
+            loadingData: true
         }));
         fetchData('studyDetail', query)
             .then(function(res) {
                 dispatch(updateStudyDetail(res.data));
                 if(typeof cb === 'function') cb();
                 dispatch(updateLayoutLoading({
-                    loadingStudyDetail: false
+                    loadingData: false
                 }));
+            }).catch(function(err) {
+                message.error(err.message);
             });
     };
 }

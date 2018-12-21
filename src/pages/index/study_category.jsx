@@ -45,8 +45,8 @@ class StudyCategory extends React.Component {
         const {study} = this.props;
         return (
             <InfiniteLoader
-                loaderDefaultIcon={<div style={{fontSize: '14px', textAlign: 'center'}}>没有更多数据了</div>}
-                height={'90vh'}
+                loaderDefaultIcon={<div className="no-more">没有更多数据了</div>}
+                height={'95vh'}
                 triggerPercent={99}
                 onLoadMore={ (resolve, finish) => {
                     this.handleGetList(resolve, finish);

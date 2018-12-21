@@ -28,11 +28,12 @@ function propMap(state, ownProps) {
 
 const styles = theme => ({
     root: {
-        flexGrow: 1,
-        padding: '5px',
-        paddingTop: '10px',
-        minHeight: '100%',
-        paddingBottom: '20px'
+        position: 'relative',
+        overflow: 'scroll',
+        overflowScrolling: 'touch',
+        webkitOverFlowScrolling: 'touch',
+        zIndex: 1000,
+        
     },
     paper: {
         padding: theme.spacing.unit * 2,
@@ -45,6 +46,9 @@ const styles = theme => ({
     time: {
         marginTop: '20px',
         fongtSize: '12px'
+    },
+    padding: {
+        padding: '10px'
     }
 });
 
@@ -65,18 +69,18 @@ class StudyList extends React.Component {
         const {study, classes} = this.props;
         const {list} = study;
         return (
-            <InfiniteLoader
-                loaderDefaultIcon={<div style={{fontSize: '14px', textAlign: 'center'}}>没有更多数据了</div>}
-                triggerPercent={99}
-                onLoadMore={ (resolve, finish) => {
-                    this.handleGetList(resolve, finish);
-                }}
-            >
-                <div className={classes.root}>
-                    <Grid container spacing={24}>
+            <div className={classes.root}>
+                <InfiniteLoader
+                    loaderDefaultIcon={<div className="no-more">没有更多数据了</div>}
+                    triggerPercent={99}
+                    onLoadMore={ (resolve, finish) => {
+                        this.handleGetList(resolve, finish);
+                    }}
+                >
+                    <Grid container>
                         {list.map(function(item, index) {
                             return (
-                                <Grid item xs={12} key={index}>
+                                <Grid item xs={12} key={index} className={classes.padding}>
                                     <a href={`/client/list/detail/?id=${item.cid}`}>
                                         <Card>
                                             {item.type !== 1 ? <CardMedia
@@ -97,8 +101,8 @@ class StudyList extends React.Component {
                             );
                         })}
                     </Grid>
-                </div>
-            </InfiniteLoader>
+                </InfiniteLoader>
+            </div>
         );
     }
     handleGetList(resolve, finish) {

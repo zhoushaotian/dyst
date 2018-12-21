@@ -48,7 +48,7 @@ function fetchData(action, data, method, opt) {
         if(res.data.code === 0) {
             return Promise.resolve(res.data);
         }else {
-            let err = new Error(res.data.msg);
+            let err = new Error(res.data.msg ? res.data.msg : '获取数据错误');
             return Promise.reject(err);
         }
     });

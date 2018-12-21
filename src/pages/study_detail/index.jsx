@@ -6,6 +6,7 @@ import {
     Article,
     TabBar,
     TabBarItem,
+    LoadMore
 } from 'react-weui';
 
 import moment from 'moment';
@@ -23,7 +24,8 @@ const INTERVAL_RECORD_TIME = 30 * 1000;
 function propMap(state, ownProps) {
     return {
         study: state.study,
-        routing: ownProps
+        routing: ownProps,
+        modal: state.modal
     };
 }
 
@@ -35,7 +37,7 @@ class StudyDetail extends React.Component {
         const id = getQuery(routing).id;
         if(id) {
             dispatch(fetchStudyDetail({
-                categoryId: id
+                id
             }, () => {
                 // 定时调用记录学习时间
                 let curTime = new moment();
@@ -57,11 +59,11 @@ class StudyDetail extends React.Component {
         }
     }
     render() {
-        const {study} = this.props;
+        const {study, modal} = this.props;
         const {detail} = study;
         return (
-            <Page infiniteLoader={false} className="article" title="Article" subTitle="文章">
-                <div style={{backgroundColor: 'white', paddingBottom: '50px'}}>
+            <Page ptr={false} infiniteLoader={false} className="article" title="Article" subTitle="文章">
+                {modal.loadingData ? <LoadMore loading/> : <div style={{backgroundColor: 'white', paddingBottom: '50px'}}>
                     <Article
                     >
                         <h1>{detail.title}</h1>
@@ -75,7 +77,7 @@ class StudyDetail extends React.Component {
                         </div>
                     </Article>
                     
-                </div>
+                </div>}
                 <br/>
                 <div style={{position: 'fixed', bottom: 0, right: 0, left: 0}}>
                     <TabBar style={{}}>
@@ -99,7 +101,8 @@ class StudyDetail extends React.Component {
 StudyDetail.propTypes = {
     routing: propTypes.object,
     dispatch: propTypes.func,
-    study: propTypes.object
+    study: propTypes.object,
+    modal: propTypes.object
 };
 
 export default connect(propMap)(StudyDetail);

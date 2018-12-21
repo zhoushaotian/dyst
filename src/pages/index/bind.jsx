@@ -11,7 +11,6 @@ import {
     Label,
     CellBody,
     Input,
-    CellFooter,
     Button,
     CellsTitle,
     Page
@@ -43,7 +42,7 @@ class Bind extends React.Component {
         this.hasGetCode = false;
     }
     render() {
-        const {idcard, code, phone, codeTime} = this.state;
+        const {idcard, phone} = this.state;
         return (
             <Page infiniteLoader={false}>
                 <CellsTitle>党员绑定</CellsTitle>
@@ -56,23 +55,12 @@ class Bind extends React.Component {
                             <Input type="number" placeholder="请输入身份证号码" value={idcard} onChange={(e) => {this.handleValueChange('idcard', e.target.value);}}/>
                         </CellBody>
                     </FormCell>
-                    <FormCell vcode>
+                    <FormCell>
                         <CellHeader>
                             <Label>手机号</Label>
                         </CellHeader>
                         <CellBody>
                             <Input type="tel" placeholder="请输入手机号码" value={phone} onChange={(e) => {this.handleValueChange('phone', e.target.value);}}/>
-                        </CellBody>
-                        <CellFooter>
-                            <Button type="vcode" onClick={this.handleFetchCode}>{codeTime ? `${codeTime}秒` : '获取验证码'}</Button>
-                        </CellFooter>
-                    </FormCell>
-                    <FormCell>
-                        <CellHeader>
-                            <Label>验证码</Label>
-                        </CellHeader>
-                        <CellBody>
-                            <Input type="number" placeholder="请输入验证码" value={code} onChange={(e) => {this.handleValueChange('code', e.target.value);}}/>
                         </CellBody>
                     </FormCell>
                 </Form>
@@ -81,23 +69,16 @@ class Bind extends React.Component {
         );
     }
     handleClickBind() {
-        const {code, phone, idcard} = this.state;
+        const {phone, idcard} = this.state;
         if(!idcard) {
             return message.error('请填写身份证');
         }
         if(!phone) {
             return message.error('请填写手机号');
         }
-        if(!code) {
-            return message.error('请填写验证码');
-        }
-        if(!this.hasGetCode) {
-            return message.error('请先获取验证码');
-        }
         fetchData('bindParty', {
             idcard,
             phone,
-            code
         }, 'post').then(function(res) {
             message.success(res.msg + '即将跳转首页');
             setTimeout(() => {

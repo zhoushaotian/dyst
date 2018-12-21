@@ -32,7 +32,7 @@ function getEveryLevelCom(data, classes) {
                 <ExpansionPanel  key={item.id} defaultExpanded={false} >
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography className={classes.heading} component={() => {
-                            return <span style={{textIndent: `${item.level * 10}px`}}>{item.name}</span>;
+                            return <span style={{paddingLeft: `${item.level * 10}px`}}>{item.name}</span>;
                         }}></Typography>
                     </ExpansionPanelSummary>
                     <div>
