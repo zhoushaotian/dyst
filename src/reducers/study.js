@@ -46,7 +46,7 @@ export default function(state = INIT_STATE, action) {
         });
     case UPDATE_STUDY_LIST:
         return Object.assign({}, state, {
-            list: action.data.content,
+            list: state.list.concat(action.data.content),
             listPage: {
                 limit: action.data.limit,
                 offset: action.data.offset
