@@ -5,6 +5,9 @@ import {message} from '../common/tool';
 export const UPDATE_USER_INFO = 'UPDATE_USER_INFO';
 export const CLEAN_USER_INFO = 'CLEAN_USER_INFO';
 
+export function fetchUserCollectRecord(query) {
+    return fetchData('collectStudy', query);
+}
 
 export function fetchUserStudyRecord(query) {
     return fetchData('getStudyRecord', query);

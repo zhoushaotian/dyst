@@ -37,13 +37,13 @@ export const TAB_BARS = [
         name: '政务矩阵',
         component: <Metrix/>,
         icon: metirIcon,
-        href: '/client/?tab=4'
+        href: '/client/?tab=3'
     },
     {
         name: '我的信息',
         component: <Account/>,
         icon: infoIcon,
-        href: '/client/?tab=3'
+        href: '/client/?tab=4'
     },
 ];
 

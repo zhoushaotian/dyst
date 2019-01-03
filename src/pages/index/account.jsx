@@ -106,6 +106,7 @@ class Account extends React.Component {
                 <CardActions>
                     {isBind ? null : <a href="/client/bind/"><Button variant="contained" size="small" color="secondary">绑定党员</Button></a>}
                     {isBind ? <a href="/client/record/"><Button variant="contained" size="small" color="secondary">查看我的学习记录</Button></a> : null}
+                    {isBind ? <a href="/client/collect/" style={{marginLeft: '10px'}}><Button variant="contained" size="small" color="secondary">我的收藏</Button></a> : null}
                 </CardActions>
             </Card>
         );

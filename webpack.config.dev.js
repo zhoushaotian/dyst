@@ -10,7 +10,7 @@ const extractLESS = new ExtractTextPlugin('css/app.[chunkhash:8].min.css');
 const del = require('del');
 
 del(path.resolve(__dirname, 'public/'));
-const ENV = "'dev'";
+const ENV = "'pro'";
 
 module.exports = {
     entry: {

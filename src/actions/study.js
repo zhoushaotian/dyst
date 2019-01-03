@@ -10,6 +10,18 @@ export const CLEAN_STUDY_LIST = 'CLEAN_STUDY_LIST';
 export const UPDATE_STUDY_DETAIL = 'UPDATE_STUDY_DETAIL';
 export const CLEAN_STUDY_DETAIL = 'CLEAN_STUDY_DETAIL';
 
+export function collectStudy(query) {
+    return function () {
+        fetchData('collectStudy', query, 'post')
+            .then(function() {
+                fetchStudyDetail(query);
+            }).catch(function(err) {
+                message.error(err.message || '收藏失败');
+            });
+        
+    };
+}
+
 export function updateStudyDetail(data) {
     return {
         type: UPDATE_STUDY_DETAIL,
@@ -109,7 +121,7 @@ export function fetchStudyList(query, resolve, finish) {
         }));
         fetchData('studyList', query)
             .then(function(res) {
-                if(res.data.rows.length === 0) {
+                if(res.data.rows.length === 0 && typeof finish === 'function') {
                     return finish();
                 }
                 dispatch(updateStudyList({
@@ -120,7 +132,7 @@ export function fetchStudyList(query, resolve, finish) {
                 dispatch(updateLayoutLoading({
                     loadingStudyList: false
                 }));
-                resolve();
+                if(typeof resolve === 'function') resolve();
             });
         
     };

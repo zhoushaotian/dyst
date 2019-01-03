@@ -15,7 +15,8 @@ const URLS = {
     'bindParty': '/api/user/bind/',
     'userMatrix': '/api/user/matrix/',
     'getCategoryRecord': '/api/study/study/',
-    'getStudyRecord': '/api/study/categorystudy/'
+    'getStudyRecord': '/api/study/categorystudy/',
+    'collectStudy': '/api/study/collect/'
     
 };
 
