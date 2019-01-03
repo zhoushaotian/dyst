@@ -83,10 +83,10 @@ class StudyList extends React.Component {
                                 <Grid item xs={12} key={index} className={classes.padding}>
                                     <a href={`/client/list/detail/?id=${item.cid}`}>
                                         <Card>
-                                            {item.type !== 1 ? <CardMedia
+                                            <CardMedia
                                                 component="img"
                                                 image={item.imgUrl}
-                                            /> : null}
+                                            />
                                             <CardContent>
                                                 <Typography gutterBottom variant="h5" component="p" className={classes.title}>
                                                     {item.title}
