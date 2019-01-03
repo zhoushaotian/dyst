@@ -4,8 +4,8 @@ import propTypes from 'prop-types';
 import {
     Page,
     Article,
-    TabBar,
-    TabBarItem,
+    // TabBar,
+    // TabBarItem,
     LoadMore,
     Footer,
     FooterText
@@ -18,7 +18,7 @@ import {getQuery} from '../../common/tool';
 
 import {fetchStudyDetail, cleanStudyDetail, recordStudyTime, fetchStudyList, collectStudy} from '../../actions/study';
 
-import {TAB_BARS} from '../index/index';
+// import {TAB_BARS} from '../index/index';
 
 
 const INTERVAL_RECORD_TIME = 30 * 1000;
@@ -57,7 +57,7 @@ class StudyDetail extends React.Component {
             }));
             dispatch(fetchStudyList({
                 offset: 1,
-                limit: 3,
+                limit: 10,
             }));
             
         }
@@ -75,7 +75,7 @@ class StudyDetail extends React.Component {
         console.log(list);
         return (
             <Page ptr={false} infiniteLoader={false} className="article" title="Article" subTitle="文章">
-                {modal.loadingData ? <LoadMore loading/> : <div style={{backgroundColor: 'white', paddingBottom: '50px'}}>
+                {modal.loadingData ? <LoadMore loading/> : <div style={{backgroundColor: 'white', paddingBottom: '50px', position: 'absolute', top: 0, left: 0, right: 0, bottom: '25px', overflow: 'auto', WebkitOverflowScrolling: 'touch'}}>
                     <Article
                     >
                         <h1 style={{marginBottom: 0, fontWeight: 'bold'}}>{detail.title}</h1>
@@ -92,7 +92,7 @@ class StudyDetail extends React.Component {
                             <span className="list-top">精彩推荐</span>
                             {list.map((item, key) => {
                                 return (
-                                    <li key={key} className="lis">
+                                    <li key={key} className="list-item">
                                         <a href={`/client/list/detail/?id=${item.cid}`}>{item.title}</a>
                                     </li>
                                 );
@@ -105,8 +105,11 @@ class StudyDetail extends React.Component {
                     
                 </div>}
                 <br/>
-                <div style={{position: 'fixed', bottom: 0, right: 0, left: 0}}>
-                    <TabBar style={{}}>
+                <div style={{position: 'fixed', bottom: 0, right: 0, left: 0}} className="tab-bar">
+                    <svg onClick={() => {window.location = '/client/';}} fill="red" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                    <div style={{width: '30%'}}></div>
+                    {detail.isCollect === 1 ? <svg onClick={this.handleCollect} fill="red" style={{color: 'red'}} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/><path d="M0 0h24v24H0z" fill="none"/></svg> : <svg onClick={this.handleCollect} fill="red" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>  }
+                    {/* <TabBar style={{}}>
                         {TAB_BARS.map(function(bar, index) {
                             return (
                                 <TabBarItem 
@@ -118,11 +121,14 @@ class StudyDetail extends React.Component {
                             );
                         })}
                         <TabBarItem
-                            label={detail.isCollect === 1 ? '已收藏' : '收藏'}
+                            icon={<svg fill="red" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>}
+                            onClick={() => {window.location = '/client/';}}
+                        />
+                        <TabBarItem
                             icon={detail.isCollect === 1 ? <svg fill="red" style={{color: 'red'}} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/><path d="M0 0h24v24H0z" fill="none"/></svg> : <svg fill="red" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>}
                             onClick={this.handleCollect}
                         />
-                    </TabBar>
+                    </TabBar> */}
                 </div>
             </Page>
         );

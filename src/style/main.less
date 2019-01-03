@@ -76,12 +76,17 @@
     padding: 10px;
     margin-top: 20px;
     .list-item{
-        height: 30px;
+        height: 60px;
         padding: 5px;
         border-bottom: 1px solid #eeeeee;
+        
         &:last-child{
             border: none;
         }
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
     }
     .list-top{
         font-size: 12px;
@@ -92,12 +97,23 @@
         top: -5px;
         left: 0;
         color: gray;
+        background-color: white;
         
     }
     a{
         color: gray;
         text-decoration: none;
+        line-height: 60px;
     }
 
     
+}
+
+.tab-bar{
+    height: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #F3F6F6;
+    border-top: 1px solid #eeeeee
 }
